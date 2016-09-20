@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+if (!project.hasProperty('API_KEY_MOVIE_DB')) {
+    //Stop the build, we need the API key
+    throw new GradleException("Missing The Movie DB API Key. Make sure it is set in gradle properties as: API_KEY_MOVIE_DB")
+}
+
+def API_KEY = '"' + project.properties['API_KEY_MOVIE_DB'] + '"'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    repositories {
+        maven { url 'http://repo1.maven.org/maven2' }
+    }
+
+
+    defaultConfig {
+        applicationId "apps.dhayanand.com.popularmoviespro"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        all {
+            buildConfigField 'String', 'API_KEY', API_KEY
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
